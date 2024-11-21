@@ -40,4 +40,29 @@ public class JUnitTest {
         Assertions.assertEquals(1.25, vendor.getBalance());
     }
 
+
+    @Test
+    public void buyItem(){
+        vendor.addMoney(1.25);
+        vendor.select("Candy");
+        Assertions.assertEquals(0, vendor.getBalance());
+    }
+
+    @Test
+    public void buyItemLow(){
+        vendor.addMoney(0);
+        vendor.select("Candy");
+        Assertions.assertEquals(0, vendor.getBalance());
+    }
+
+    @Test
+    public void buyItemUnknown(){
+        vendor.addMoney(1.25);
+        vendor.select("Chips");
+        Assertions.assertEquals(1.25, vendor.getBalance());
+    }
+
+
+
+
 }
