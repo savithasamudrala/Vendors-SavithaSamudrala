@@ -29,7 +29,12 @@ class Vending {
      * @param amt how much money to add
      * */
     void addMoney (double amt) {
-        this.balance = this.balance + amt;
+        if (amt >= 0) {
+            this.balance = this.balance + amt;
+        }
+        if(this.balance > Integer.MAX_VALUE){
+            this.balance = Integer.MAX_VALUE;
+        }
     }
 
     /** attempt to purchase named item.  Message returned if
@@ -40,7 +45,9 @@ class Vending {
     void select (String name) {
         if (Stock.containsKey(name)) {
             Item item = Stock.get(name);
-            if (balance >= item.price) {
+            if(item.stock == 0){
+                System.out.println("Item out of stock");
+            }else if (balance >= item.price) {
                 item.purchase(1);
                 this.balance = this.balance - item.price;
             }

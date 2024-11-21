@@ -63,6 +63,17 @@ public class JUnitTest {
     }
 
 
+    @Test
+    public void emptyStock(){
+        vendor.addMoney(3);
+        vendor.select("Gum");
+        vendor.select("Gum");
+        vendor.select("Gum");
+        vendor.select("Gum");
+        vendor.select("Gum");
+        vendor.select("Gum");
+        Assertions.assertEquals(0.5, vendor.getBalance());
+    }
 
 
 }
