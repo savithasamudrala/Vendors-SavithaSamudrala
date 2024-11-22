@@ -11,8 +11,12 @@ public class JUnitTest {
 
     @BeforeEach
     public void setup() {
-        vendor = new Vending(10,5);
+        vendor = new Vending(10, 5);
+        vendor.getStock().clear();
+        vendor.getStock().put("Candy", new Item(1.25, 10));
+        vendor.getStock().put("Gum", new Item(0.50, 5));
     }
+
 
     @Test
     public void addMoneyTest(){
@@ -228,7 +232,66 @@ public class JUnitTest {
     }
 
 
+    @Test
+    public void addMultipleVendors() {
+        VendorSystem system = new VendorSystem();
+        system.addVendor("Vendor1", new Vending(10, 5));
+        system.addVendor("Vendor2", new Vending(20, 10));
+        Assertions.assertEquals(2, system.vendors.size());
+    }
 
+    @Test
+    public void printVendorInventory() {
+        VendorSystem system = new VendorSystem();
+        Vending vending = new Vending(10, 5);
+        system.addVendor("Vendor1", vending);
+        system.printInventory("Vendor1");
+    }
+
+    @Test
+    public void printAllVendorsInventories() {
+        VendorSystem system = new VendorSystem();
+        system.addVendor("Vendor1", new Vending(10, 5));
+        system.addVendor("Vendor2", new Vending(20, 10));
+        system.printAllInventories();
+    }
+
+    @Test
+    public void addDuplicateVendor() {
+        VendorSystem system = new VendorSystem();
+        system.addVendor("Vendor1", new Vending(10, 5));
+        system.addVendor("Vendor1", new Vending(20, 10));
+        Assertions.assertEquals(1, system.vendors.size());
+    }
+
+    @Test
+    public void printNonExistentVendor() {
+        VendorSystem system = new VendorSystem();
+        system.printInventory("NonExistentVendor");
+    }
+
+    @Test
+    public void removeExistingItem() {
+        Vending vendor = new Vending(10, 5);
+        vendor.removeItem("Candy");
+        Assertions.assertFalse(vendor.getStock().containsKey("Candy"));
+    }
+
+    @Test
+    public void removeNonExistentItem() {
+        Vending vendor = new Vending(10, 5);
+        vendor.removeItem("NonExistentItem");
+        Assertions.assertTrue(vendor.getStock().containsKey("Candy"));
+        Assertions.assertTrue(vendor.getStock().containsKey("Gum"));
+    }
+
+    @Test
+    public void removeAllItems() {
+        Vending vendor = new Vending(10, 5);
+        vendor.removeItem("Candy");
+        vendor.removeItem("Gum");
+        Assertions.assertTrue(vendor.getStock().isEmpty());
+    }
 
 
 

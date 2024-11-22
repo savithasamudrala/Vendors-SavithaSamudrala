@@ -15,6 +15,10 @@ class Vending {
         this.balance = 0;
     }
 
+    public HashMap<String, Item> getStock() {
+        return Stock;
+    }
+
     /** resets the Balance to 0 */
     void resetBalance () {
         this.balance = 0;
@@ -113,7 +117,14 @@ class Vending {
     }
 
 
-
+    void removeItem(String name) {
+        if (Stock.containsKey(name)) {
+            Stock.remove(name);
+            System.out.println("Removed item " + name + " from inventory.");
+        } else {
+            System.out.println("Item " + name + " not found in inventory.");
+        }
+    }
 }
 
 class Examples {
