@@ -337,6 +337,40 @@ public class JUnitTest {
         Assertions.assertEquals("Item Soda not found.", nonExistentDetails);
     }
 
+    @Test
+    public void applyDiscountToItem() {
+        vendor.applyDiscount("Candy", 20);
+        Assertions.assertEquals(1.00, vendor.getStock().get("Candy").price, 0.01);
+    }
+
+    @Test
+    public void applyInvalidDiscount() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> vendor.applyDiscount("Candy", -10));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> vendor.applyDiscount("Candy", 150));
+    }
+
+    @Test
+    public void markItemAsBestseller() {
+        vendor.markAsBestseller("Candy");
+        Assertions.assertTrue(vendor.getStock().get("Candy").bestseller);
+    }
+
+    @Test
+    public void unmarkItemAsBestseller() {
+        vendor.markAsBestseller("Candy");
+        vendor.unmarkAsBestseller("Candy");
+        Assertions.assertFalse(vendor.getStock().get("Candy").bestseller);
+    }
+
+    @Test
+    public void getBestsellers() {
+        vendor.markAsBestseller("Candy");
+        HashMap<String, Boolean> bestsellers = vendor.getBestsellers();
+        Assertions.assertTrue(bestsellers.get("Candy"));
+        Assertions.assertFalse(bestsellers.get("Gum"));
+    }
+
+
 
 
 

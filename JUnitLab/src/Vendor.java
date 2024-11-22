@@ -145,6 +145,32 @@ class Vending {
         return trends;
     }
 
+    void applyDiscount(String name, double percentage) {
+        if (Stock.containsKey(name)) {
+            Stock.get(name).applyDiscount(percentage);
+        }
+    }
+
+    void markAsBestseller(String name) {
+        if (Stock.containsKey(name)) {
+            Stock.get(name).markAsBestseller();
+        }
+    }
+
+    void unmarkAsBestseller(String name) {
+        if (Stock.containsKey(name)) {
+            Stock.get(name).unmarkAsBestseller();
+        }
+    }
+
+    HashMap<String, Boolean> getBestsellers() {
+        HashMap<String, Boolean> bestsellers = new HashMap<>();
+        for (Map.Entry<String, Item> entry : Stock.entrySet()) {
+            bestsellers.put(entry.getKey(), entry.getValue().bestseller);
+        }
+        return bestsellers;
+    }
+
 
 }
 
