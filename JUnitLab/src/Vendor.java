@@ -6,7 +6,7 @@ import java.util.HashMap;
  * well as the current balance of money that has been deposited into the machine.
  */
 class Vending {
-    private static HashMap<String, Item> Stock = new HashMap<String,Item>();
+    static HashMap<String, Item> Stock = new HashMap<String,Item>();
     private double balance;
 
     Vending(int numCandy, int numGum) {
@@ -56,6 +56,42 @@ class Vending {
         }
         else System.out.println("Sorry, don't know that item");
     }
+
+    void restockItem(String name, int amount){
+        if(amount <=0){
+            System.out.println("Invalid restock amount.");
+        }
+
+        else if(Stock.containsKey(name)){
+            Item item = Stock.get(name);
+            if ((long)item.stock + amount > Integer.MAX_VALUE) {
+                item.stock = Integer.MAX_VALUE;
+                System.out.println("Stock of " + name + " has reached its maximum value.");
+            } else {
+                item.restock(amount);
+                System.out.println("Restocked " + amount + " units of " + name + ".");
+            }
+
+        } else {
+            System.out.println("Item not found. Adding " + name + " with " + amount + " units.");
+            Stock.put(name, new Item(1.00, Math.min(amount, Integer.MAX_VALUE)));
+        }
+    }
+
+    void setPrice(String name, double price) {
+        if (price < 0) {
+            System.out.println("Invalid price.");
+            return;
+        }
+
+        if (Stock.containsKey(name)) {
+            Stock.get(name).setPrice(price);
+            System.out.println("Set price of " + name + " to " + price + ".");
+        } else {
+            System.out.println("Item " + name + " not found.");
+        }
+    }
+
 
 }
 
