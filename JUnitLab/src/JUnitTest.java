@@ -181,7 +181,7 @@ public class JUnitTest {
         vendor.restockItem("Candy", 5);
         vendor.addMoney(1.25);
         vendor.select("Candy");
-        Assertions.assertEquals(14, getStockQuantity("Candy")); // Stock reduces after purchase
+        Assertions.assertEquals(14, getStockQuantity("Candy"));
     }
 
 
@@ -192,6 +192,43 @@ public class JUnitTest {
             return 0;
         }
     }
+
+    @Test
+    public void renameExistingItem() {
+        vendor.renameItem("Candy", "Sweets");
+        Assertions.assertFalse(Vending.Stock.containsKey("Candy"));
+        Assertions.assertTrue(Vending.Stock.containsKey("Sweets"));
+        Assertions.assertEquals(10, getStockQuantity("Sweets"));
+        Assertions.assertEquals(1.25, Vending.Stock.get("Sweets").price);
+    }
+
+
+    @Test
+    public void renameNonExistentItem() {
+        vendor.renameItem("NonExistent", "Existent");
+        Assertions.assertFalse(Vending.Stock.containsKey("Existent"));
+    }
+
+
+    @Test
+    public void renameToExistingItem() {
+        vendor.renameItem("Candy", "Gum");
+        Assertions.assertTrue(Vending.Stock.containsKey("Candy"));
+        Assertions.assertTrue(Vending.Stock.containsKey("Gum"));
+        Assertions.assertEquals(10, getStockQuantity("Candy"));
+        Assertions.assertEquals(5, getStockQuantity("Gum"));
+    }
+
+
+    @Test
+    public void renameToEmptyString() {
+        vendor.renameItem("Candy", "");
+        Assertions.assertFalse(Vending.Stock.containsKey(""));
+        Assertions.assertTrue(Vending.Stock.containsKey("Candy"));
+    }
+
+
+
 
 
 

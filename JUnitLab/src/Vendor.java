@@ -92,6 +92,27 @@ class Vending {
         }
     }
 
+    void renameItem(String oldName, String newName) {
+        if (!Stock.containsKey(oldName)) {
+            System.out.println("Item " + oldName + " not found.");
+            return;
+        }
+
+        if (Stock.containsKey(newName)) {
+            System.out.println("Item " + newName + " already exists. Cannot rename.");
+            return;
+        }
+
+        if(newName.equals("")){
+            return;
+        }
+
+        Item item = Stock.remove(oldName);
+        Stock.put(newName, item);
+        System.out.println("Renamed item " + oldName + " to " + newName + ".");
+    }
+
+
 
 }
 
