@@ -3,6 +3,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assertions.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JUnitTest {
 
@@ -292,6 +294,49 @@ public class JUnitTest {
         vendor.removeItem("Gum");
         Assertions.assertTrue(vendor.getStock().isEmpty());
     }
+
+
+    @Test
+    public void trackCustomerPurchases() {
+        Vending vendor = new Vending(10, 5);
+        vendor.addMoney(3.25);
+        vendor.select("Candy");
+        vendor.select("Candy");
+        vendor.select("Gum");
+        HashMap<String, Integer> trends = vendor.getPurchaseTrends();
+        Assertions.assertEquals(2, trends.get("Candy"));
+        Assertions.assertEquals(1, trends.get("Gum"));
+    }
+
+
+
+
+    @Test
+    public void viewItemDetailsWithDescription() {
+        Vending vendor = new Vending(10, 5);
+        String candyDetails = vendor.viewItemDetails("Candy");
+        Assertions.assertTrue(candyDetails.contains("Price: $1.25"));
+        Assertions.assertTrue(candyDetails.contains("Stock: 10"));
+        Assertions.assertTrue(candyDetails.contains("Description: A sweet treat to enjoy."));
+    }
+
+    @Test
+    public void viewItemDetailsWithoutDescription() {
+        Vending vendor = new Vending(10, 5);
+        String gumDetails = vendor.viewItemDetails("Gum");
+        Assertions.assertTrue(gumDetails.contains("Price: $0.5"));
+        Assertions.assertTrue(gumDetails.contains("Stock: 5"));
+        Assertions.assertTrue(gumDetails.contains("Description: No description available"));
+    }
+
+
+    @Test
+    public void viewDetailsForNonExistentItem() {
+        Vending vendor = new Vending(10, 5);
+        String nonExistentDetails = vendor.viewItemDetails("Soda");
+        Assertions.assertEquals("Item Soda not found.", nonExistentDetails);
+    }
+
 
 
 

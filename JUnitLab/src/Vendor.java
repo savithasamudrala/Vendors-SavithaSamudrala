@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -10,7 +11,7 @@ class Vending {
     private double balance;
 
     Vending(int numCandy, int numGum) {
-        Stock.put("Candy", new Item(1.25, numCandy));
+        Stock.put("Candy", new Item(1.25, numCandy, "A sweet treat to enjoy."));
         Stock.put("Gum", new Item(.5, numGum));
         this.balance = 0;
     }
@@ -46,19 +47,21 @@ class Vending {
      *
      * @param name The name of the item to purchase ("Candy" or "Gum")
      */
-    void select (String name) {
+    void select(String name) {
         if (Stock.containsKey(name)) {
             Item item = Stock.get(name);
-            if(item.stock == 0){
-                System.out.println("Item out of stock");
-            }else if (balance >= item.price) {
+            if (balance >= item.price && item.stock > 0) {
                 item.purchase(1);
-                this.balance = this.balance - item.price;
+                balance -= item.price;
+                System.out.println("Purchased " + name + ".");
+            } else if (item.stock == 0) {
+                System.out.println(name + " is out of stock.");
+            } else {
+                System.out.println("Insufficient balance to purchase " + name + ".");
             }
-            else
-                System.out.println("Gimme more money");
+        } else {
+            System.out.println("Item " + name + " not found.");
         }
-        else System.out.println("Sorry, don't know that item");
     }
 
     void restockItem(String name, int amount){
@@ -125,6 +128,24 @@ class Vending {
             System.out.println("Item " + name + " not found in inventory.");
         }
     }
+
+    String viewItemDetails(String name) {
+        if (Stock.containsKey(name)) {
+            return Stock.get(name).getDetails();
+        } else {
+            return "Item " + name + " not found.";
+        }
+    }
+
+    HashMap<String, Integer> getPurchaseTrends() {
+        HashMap<String, Integer> trends = new HashMap<>();
+        for (Map.Entry<String, Item> entry : Stock.entrySet()) {
+            trends.put(entry.getKey(), entry.getValue().purchaseCount);
+        }
+        return trends;
+    }
+
+
 }
 
 class Examples {
